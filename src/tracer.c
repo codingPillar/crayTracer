@@ -1,13 +1,6 @@
 #include <math.h>
 
-#include "common.h"
 #include "tracer.h"
-
-void tracer_init_buffer(struct VBuffer *buffer, unsigned int width, unsigned int height){
-    buffer->width = width;
-    buffer->height = height;
-    buffer->buffer = MALLOC(width * height * sizeof(uint32_t));
-}
 
 /* TRACER MATH */
 struct Vec3 vec3_add(const struct Vec3 first, const struct Vec3 second){

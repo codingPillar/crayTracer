@@ -1,15 +1,7 @@
 #ifndef TRACER_H
 #define TRACER_H
 
-#include <stdint.h>
-
 #define VEC3_DIM_COUNT 3
-struct VBuffer{
-    unsigned int width, height;
-    uint32_t *buffer;
-};
-
-void tracer_init_buffer(struct VBuffer *buffer, unsigned int width, unsigned int height);
 
 /* TRACER MATH */
 struct Vec3{
