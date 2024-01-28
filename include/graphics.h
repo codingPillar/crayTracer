@@ -5,12 +5,13 @@
 
 #include "tracer.h"
 
-#define GRAPHICS_BLACK 0x00000000
-#define GRAPHICS_WHITE 0xFFFFFFFF
-#define GRAPHICS_RED 0xFF0000FF
-#define GRAPHICS_PURPLE 0xFF00FFFF
-/* TODO, IMPLEMENT */
-#define GRAPHICS_LIGHT_BLUE 0xFF0000FF
+#define GRAPHICS_BLACK      0x00000000
+#define GRAPHICS_WHITE      0xFFFFFFFF
+#define GRAPHICS_RED        0xFF0000FF
+#define GRAPHICS_PURPLE     0xFF00FFFF
+#define GRAPHICS_GREEN      0x00FF00FF
+#define GRAPHICS_YELLOW     0xFFFF00FF
+#define GRAPHICS_LIGHT_BLUE 0x00FFFFFF
 
 struct VBuffer{
     unsigned int width, height;
@@ -20,6 +21,7 @@ struct VBuffer{
 void tracer_init_buffer(struct VBuffer *buffer, unsigned int width, unsigned int height);
 
 /* SIMPLE RASTER SHAPES (NOT RAYTRACED) */
+void tracer_stroke_line(struct VBuffer *buffer, struct Vec3 start, struct Vec3 end, uint32_t color);
 void tracer_fill_rect(struct VBuffer *buffer, struct Vec3 corner, unsigned int width, unsigned int height, uint32_t color);
 void tracer_fill_circle(struct VBuffer *buffer, struct Vec3 center, int radius, uint32_t color);
 
