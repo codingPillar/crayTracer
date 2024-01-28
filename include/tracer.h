@@ -9,6 +9,7 @@ struct Vec3{
 };
 struct Vec3 vec3_add(const struct Vec3 first, const struct Vec3 second);
 struct Vec3 vec3_sub(const struct Vec3 first, const struct Vec3 second);
+float vec3_dot(const struct Vec3 first, const struct Vec3 second);
 struct Vec3 vec3_scale(const struct Vec3 vec, float factor);
 struct Vec3 vec3_normalize(const struct Vec3 vec);
 float vec3_length(const struct Vec3 vec);

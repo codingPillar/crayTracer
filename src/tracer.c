@@ -11,6 +11,10 @@ struct Vec3 vec3_sub(const struct Vec3 first, const struct Vec3 second){
     return (struct Vec3){.x = first.x - second.x, .y = first.y - second.y, .z = first.z - second.z};
 }
 
+float vec3_dot(const struct Vec3 first, const struct Vec3 second){
+    return first.x * second.x + first.y * second.y + first.z * second.z;
+}
+
 struct Vec3 vec3_scale(const struct Vec3 first, float factor){
     return (struct Vec3) {.x = first.x * factor, .y = first.y * factor, .z = first.z * factor};
 }
