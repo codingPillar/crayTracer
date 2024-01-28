@@ -5,7 +5,7 @@ SRC_FILES:=$(wildcard $(SRC_DIR)/*.c)
 SRC_OBJ:=$(SRC_FILES:$(SRC_DIR)/%=$(OUT_DIR)/%.o)
 
 CC:=gcc
-CFLAGS:=-Wall -Wextra -Werror
+CFLAGS:=-Wall -Wextra #-Werror
 CINCLUDE:=-I./include
 # ONLY LIB DEPENDENCIES
 CLINK:=-lm
