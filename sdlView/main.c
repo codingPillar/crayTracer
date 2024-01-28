@@ -6,12 +6,14 @@
 
 #include "tracer.h"
 #include "graphics.h"
+#include "sphere.h"
 
 #define INIT_WINDOW_ERROR 1
 
 static struct {
     unsigned int width, height;
     unsigned int time;
+    int mouseX, mouseY;
 } context;
 
 int main(void){
@@ -48,14 +50,32 @@ int main(void){
             if( e.type == SDL_QUIT ) quit = true;
         }
 
+        /* GET MOUSE POSITION */
+        SDL_GetMouseState(&context.mouseX, &context.mouseY);
+
         /* CLEAN BUFFERS */
         tracer_fill_rect(&vbuffer, (struct Vec3) {.x = 0.f, .y = 0.f}, context.width, context.height, GRAPHICS_BLACK);
 
         /* APPLICATION DRAWING */
-        printf("\rcurrent float: %f", sinf(context.time));
-        tracer_fill_rect(&vbuffer, (struct Vec3) {.x = 0.f, .y = 0.f}, (unsigned int)fabs(sin(context.time / 50.f) * 200), 100, GRAPHICS_WHITE);
+        const struct Vec3 center = {.x = context.width / 2.f, .y = context.height / 2.f};
+        const struct Vec3 mousePosition = {.x = context.mouseX, .y = context.mouseY};
+        const float radius = 100.f;
+        
+        const struct Vec3 rayOrigin = {.x = 0.f, .y = context.height / 2.f}; 
+        const struct Vec3 direction = vec3_normalize(vec3_sub(mousePosition, rayOrigin));
+        const struct Ray ray = {.origin = rayOrigin, .direction = direction};
+        
+        tracer_fill_circle(&vbuffer, center, radius, GRAPHICS_PURPLE);
 
-        tracer_fill_circle(&vbuffer, (struct Vec3) {.x = context.width / 2.f, .y = context.height / 2.f}, 100, GRAPHICS_PURPLE);
+        tracer_fill_circle(&vbuffer, mousePosition, 20, GRAPHICS_YELLOW);
+        tracer_fill_circle(&vbuffer, rayOrigin, 20, GRAPHICS_PURPLE);
+        tracer_stroke_line(&vbuffer, rayOrigin, vec3_add(rayOrigin, vec3_scale(direction, 100.f)), GRAPHICS_LIGHT_BLUE);
+
+        struct Sphere sphere = {.center = center, .radius = radius};
+        struct Vec3 intersection;
+        enum IntersectionState state = tracer_sphere_collision(ray, &sphere, &intersection);
+        printf("\rINTERSECTION STATE: %s", (state == INTESECT_VALID) ? "VALID" : "ERROR");
+        tracer_fill_circle(&vbuffer, intersection, 20, GRAPHICS_LIGHT_BLUE);
 
         /* TEXTURE DRAWING */
         int pitch;
