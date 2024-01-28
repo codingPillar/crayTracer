@@ -9,3 +9,4 @@ include_directories("include")
 FILE(GLOB SRC src/*)
 
 add_executable(tracer ${SRC})
+target_link_libraries(tracer m)
