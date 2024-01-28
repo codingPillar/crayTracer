@@ -24,7 +24,7 @@ SDL_VIEW_SRC_OBJ:=$(SDL_VIEW_SRC_FILES:$(SDL_VIEW_SRC_DIR)/%=$(OUT_DIR)/%.o)
 $(OUT_DIR)/%.o: $(SDL_VIEW_SRC_DIR)/%
 	$(COMPILE) -c $(shell pkg-config sdl2 --cflags)
 $(OUTNAME): $(SRC_OBJ) $(SDL_VIEW_SRC_OBJ)
-	$(COMPILE) $(CLINK) $(shell pkg-config sdl2 --libs) $(shell pkg-config glew --libs)
+	$(COMPILE) $(CLINK) $(shell pkg-config sdl2 --libs)
 
 cmake:
 	cmake -S . -B build

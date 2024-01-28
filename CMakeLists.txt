@@ -6,7 +6,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
-pkg_check_modules(GLEW REQUIRED glew)
 
 include_directories("include")
 
@@ -18,7 +17,3 @@ target_link_libraries(tracer m)
 target_include_directories(tracer PUBLIC ${SDL2_INCLUDE_DIRS})
 target_link_libraries(tracer ${SDL2_LIBRARIES})
 target_compile_options(tracer PUBLIC ${SDL2_CFLAGS_OTHER})
-
-target_include_directories(tracer PUBLIC ${GLEW_INCLUDE_DIRS})
-target_link_libraries(tracer ${GLEW_LIBRARIES})
-target_compile_options(tracer PUBLIC ${GLEW_CFLAGS_OTHER})
