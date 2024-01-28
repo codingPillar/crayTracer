@@ -30,3 +30,8 @@ struct Vec3 vec3_normalize(const struct Vec3 vec){
 float vec3_length(const struct Vec3 vec){
     return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
+
+/* RAY FUNCTIONS */
+struct Vec3 ray_get_position(struct Ray ray, float t){
+    return vec3_add(ray.origin, vec3_scale(ray.direction, t));
+}

@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+#define VEC3_DIM_COUNT 3
 struct VBuffer{
     unsigned int width, height;
     uint32_t *buffer;
@@ -24,6 +25,7 @@ struct Ray{
     struct Vec3 origin;
     struct Vec3 direction;
 };
+struct Vec3 ray_get_position(struct Ray ray, float t);
 
 enum IntersectionState{
     INTESECT_NON_VALID,
