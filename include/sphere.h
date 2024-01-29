@@ -8,7 +8,7 @@ struct Sphere{
     struct Vec3 center;
 };
 
-struct Shape* tracer_get_sphere(const struct Sphere *shere);
+struct Shape tracer_get_sphere(struct Sphere *shere);
 enum IntersectionState tracer_sphere_collision(struct Ray ray, const struct Sphere *sphere, struct Vec3 *intersection);
 struct Ray tracer_sphere_reflect(struct Ray ray, const struct Sphere *sphere, struct Vec3 intersection);
 

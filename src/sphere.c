@@ -1,9 +1,22 @@
 #include <math.h>
+#include <string.h>
 
+#include "common.h"
 #include "sphere.h"
 #include "tracer.h"
 
 #define VECTORIAL_METHOD
+
+enum IntersectionState tracer_sphere_collision_helper(struct Ray ray, const void *sphere, struct Vec3 *intersection){
+    return tracer_sphere_collision(ray, (const struct Sphere*) sphere, intersection);
+}
+struct Ray tracer_sphere_reflect_helper(struct Ray ray, const void *sphere, struct Vec3 intersection){
+    return tracer_sphere_reflect(ray, (const struct Sphere*) sphere, intersection);
+}
+
+struct Shape tracer_get_sphere(struct Sphere *shere){
+    return (struct Shape) {.data = shere, .intersectionCallback = tracer_sphere_collision_helper, .reflectionCallback = tracer_sphere_reflect_helper};
+}
 
 #ifndef VECTORIAL_METHOD
 enum IntersectionState tracer_sphere_collision(struct Ray ray, const struct Sphere *sphere, struct Vec3 *intersection){

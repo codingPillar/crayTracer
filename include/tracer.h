@@ -26,10 +26,12 @@ enum IntersectionState{
     /* TODO, MAYBE ADD MORE STATES */
 };
 typedef enum IntersectionState (*IntersectionCallback)(struct Ray ray, const void *shape, struct Vec3 *intersection);
+typedef struct Ray (*ReflectionCallback)(struct Ray ray, const void *shape, struct Vec3 intersection);
 
 struct Shape{
     void *data;
-    IntersectionCallback callback;
+    IntersectionCallback intersectionCallback;
+    ReflectionCallback reflectionCallback;
 };
 
 #endif //TRACER_H
