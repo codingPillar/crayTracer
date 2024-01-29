@@ -74,8 +74,11 @@ int main(void){
         struct Sphere sphere = {.center = center, .radius = radius};
         struct Vec3 intersection;
         enum IntersectionState state = tracer_sphere_collision(ray, &sphere, &intersection);
-        printf("\rINTERSECTION STATE: %s", (state == INTESECT_VALID) ? "VALID" : "ERROR");
         tracer_fill_circle(&vbuffer, intersection, 20, GRAPHICS_LIGHT_BLUE);
+        if(state == INTESECT_VALID){
+            struct Ray reflection = tracer_sphere_reflect(ray, &sphere, intersection);
+            tracer_stroke_line(&vbuffer, intersection, vec3_add(intersection, vec3_scale(reflection.direction, 100.f)), GRAPHICS_LIGHT_BLUE);
+        }
 
         /* TEXTURE DRAWING */
         int pitch;
