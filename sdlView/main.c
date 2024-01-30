@@ -42,6 +42,14 @@ int main(void){
     struct VBuffer vbuffer;
     tracer_init_buffer(&vbuffer, context.width, context.height);
 
+    /* INITIALIZE APPLICATION MODELS */
+    struct Vec3 camera = {.z = -1.f};
+    struct Vec3 projectionDomain = {.x = 1.f, .y = 1.f};
+    struct ModelArray models;
+    
+    struct Sphere sphere = {.radius = 0.5f};
+    models_push_back(&models, tracer_get_sphere(&sphere));
+
     bool quit = false;
     SDL_Event e;
     while( !quit ){
@@ -57,27 +65,14 @@ int main(void){
         tracer_fill_rect(&vbuffer, (struct Vec3) {.x = 0.f, .y = 0.f}, context.width, context.height, GRAPHICS_BLACK);
 
         /* APPLICATION DRAWING */
-        const struct Vec3 center = {.x = context.width / 2.f, .y = context.height / 2.f};
-        const struct Vec3 mousePosition = {.x = context.mouseX, .y = context.mouseY};
-        const float radius = 100.f;
-        
-        const struct Vec3 rayOrigin = {.x = 0.f, .y = context.height / 2.f}; 
-        const struct Vec3 direction = vec3_normalize(vec3_sub(mousePosition, rayOrigin));
-        const struct Ray ray = {.origin = rayOrigin, .direction = direction};
-        
-        tracer_fill_circle(&vbuffer, center, radius, GRAPHICS_PURPLE);
-
-        tracer_fill_circle(&vbuffer, mousePosition, 20, GRAPHICS_YELLOW);
-        tracer_fill_circle(&vbuffer, rayOrigin, 20, GRAPHICS_PURPLE);
-        tracer_stroke_line(&vbuffer, rayOrigin, vec3_add(rayOrigin, vec3_scale(direction, 100.f)), GRAPHICS_LIGHT_BLUE);
-
-        struct Sphere sphere = {.center = center, .radius = radius};
-        struct Vec3 intersection;
-        enum IntersectionState state = tracer_sphere_collision(ray, &sphere, &intersection);
-        tracer_fill_circle(&vbuffer, intersection, 20, GRAPHICS_LIGHT_BLUE);
-        if(state == INTESECT_VALID){
-            struct Ray reflection = tracer_sphere_reflect(ray, &sphere, intersection);
-            tracer_stroke_line(&vbuffer, intersection, vec3_add(intersection, vec3_scale(reflection.direction, 100.f)), GRAPHICS_LIGHT_BLUE);
+        for(unsigned int i = 0; i < context.height; i++){
+            struct Vec3 direction = {.x = i * 2.f * projectionDomain.y / context.height};
+            for(unsigned int j = 0; j < context.width; j++){
+                direction.y = j * 2.f * projectionDomain.x / context.width;
+                struct Ray ray = {.origin = camera, .direction = direction};
+                vbuffer.buffer[i * context.width + j] = 
+                    tracer_color_from_vec3(tracer_get_pixel_color(ray, &models, 1));
+            }
         }
 
         /* TEXTURE DRAWING */
