@@ -32,3 +32,40 @@ float vec3_length(const struct Vec3 vec){
 struct Vec3 ray_get_position(struct Ray ray, float t){
     return vec3_add(ray.origin, vec3_scale(ray.direction, t));
 }
+
+void models_push_back(struct ModelArray *models, struct Shape shape){
+    models->shapes[models->count] = shape;
+    models->count++;
+}
+
+struct Vec3 tracer_get_pixel_color(struct Ray ray, const struct ModelArray *models, unsigned int reflectionCount){
+    struct Vec3 color = {0};
+    for(unsigned int i = 0; i < reflectionCount; i++){
+        /* FIND THE NEAREST INTERSECTION WITH THE MODELS */
+        enum IntersectionState intersectionState = INTESECT_NON_VALID;
+        struct Vec3 intersection = {0};
+        unsigned int shapeIndex;
+        for(unsigned int j = 0; j < models->count; j++){
+            struct Vec3 currentIntersection = {0};
+            enum IntersectionState current = models->shapes[j].intersectionCallback(ray, models->shapes[j].data, &currentIntersection);
+            if(current != INTESECT_VALID) continue;
+            enum IntersectionState previousState = intersectionState;
+            /* FIRST VALID INTERSECTION FOUND */
+            intersectionState = INTESECT_VALID;
+            if(previousState == INTESECT_NON_VALID) goto setMin;
+            /* WE WANT TO KEEP THE CLOSEST INTERSECTION */
+            const float currentLength = vec3_length(vec3_sub(ray.origin, currentIntersection));
+            const float length = vec3_length(vec3_sub(ray.origin, intersection));
+            if(currentLength > length) continue;
+            setMin:
+            intersection = currentIntersection;
+            shapeIndex = j;
+        }
+        /* RAY WONT COLLIDE WITH ANYTHING ANYMORE */
+        if(intersectionState == INTESECT_NON_VALID) break;
+        /* WE WANT TO COMPUTE REFLECTION ONLY FOR THE CLOSEST INTERSECTION POINT */
+        ray = models->shapes[shapeIndex].reflectionCallback(ray, models->shapes[shapeIndex].data, intersection);
+        color = (struct Vec3) {.x = 1.f, .y = 1.f, .z = 1.f};
+    }
+    return color;
+}

@@ -2,6 +2,7 @@
 #define TRACER_H
 
 #define VEC3_DIM_COUNT 3
+#define MAX_NUM_MODELS 50
 
 /* TRACER MATH */
 struct Vec3{
@@ -33,5 +34,13 @@ struct Shape{
     IntersectionCallback intersectionCallback;
     ReflectionCallback reflectionCallback;
 };
+
+/* TODO, USE DYNAMIC ARRAY */
+struct ModelArray{
+    struct Shape shapes[MAX_NUM_MODELS];
+    unsigned int count;
+};
+void models_push_back(struct ModelArray *models, struct Shape shape);
+struct Vec3 tracer_get_pixel_color(struct Ray ray, const struct ModelArray *models, unsigned int reflectionCount);
 
 #endif //TRACER_H
