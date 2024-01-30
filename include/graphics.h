@@ -20,6 +20,8 @@ struct VBuffer{
 
 void tracer_init_buffer(struct VBuffer *buffer, unsigned int width, unsigned int height);
 
+uint32_t tracer_color_from_vec3(struct Vec3 color);
+
 /* SIMPLE RASTER SHAPES (NOT RAYTRACED) */
 void tracer_stroke_line(struct VBuffer *buffer, struct Vec3 start, struct Vec3 end, uint32_t color);
 void tracer_fill_rect(struct VBuffer *buffer, struct Vec3 corner, unsigned int width, unsigned int height, uint32_t color);

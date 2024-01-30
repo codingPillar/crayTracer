@@ -9,6 +9,13 @@ void tracer_init_buffer(struct VBuffer *buffer, unsigned int width, unsigned int
     buffer->buffer = MALLOC(width * height * sizeof(uint32_t));
 }
 
+uint32_t tracer_color_from_vec3(struct Vec3 color){
+    uint8_t r = color.x * 255.f;
+    uint8_t g = color.y * 255.f;
+    uint8_t b = color.z * 255.f;
+    return (r << 24) | (g << 16) | (b << 8) | 0xFF;
+}
+
 void tracer_stroke_line(struct VBuffer *buffer, struct Vec3 start, struct Vec3 end, uint32_t color){
     const unsigned int length = vec3_length(vec3_sub(end, start));
     const struct Vec3 direction = vec3_normalize(vec3_sub(end, start));
