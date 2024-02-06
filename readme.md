@@ -14,7 +14,7 @@ make cmake
 make tracer
 ```
 
-### Web version is already deployed on pages at: 
+### Web version is already deployed on pages at: https://codingpillar.github.io/crayTracer/
 
 ### Currently Supported Shapes: Sphere, 
 
