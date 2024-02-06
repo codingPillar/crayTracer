@@ -26,6 +26,6 @@ void tracer_stroke_line(struct VBuffer *buffer, struct Vec3 start, struct Vec3 e
 void tracer_fill_rect(struct VBuffer *buffer, struct Vec3 corner, unsigned int width, unsigned int height, uint32_t color);
 void tracer_fill_circle(struct VBuffer *buffer, struct Vec3 center, int radius, uint32_t color);
 
-void drawScene(const struct Scene *scene, struct VBuffer *vbuffer);
+void tracer_draw_scene(const struct Scene *scene, struct VBuffer *vbuffer);
 
 #endif //TRACER_GRAPHICS_H

@@ -74,7 +74,7 @@ int main(void){
         SDL_GetMouseState(&context.mouseX, &context.mouseY);
 
         /* APPLICATION DRAWING */
-        drawScene(&scene, &vbuffer);
+        tracer_draw_scene(&scene, &vbuffer);
 
         /* TEXTURE DRAWING */
         int pitch;
