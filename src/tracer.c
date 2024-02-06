@@ -2,6 +2,8 @@
 
 #include "tracer.h"
 
+#define EPSILON 0.0001f
+
 /* TRACER MATH */
 struct Vec3 vec3_add(const struct Vec3 first, const struct Vec3 second){
     return (struct Vec3){.x = first.x + second.x, .y = first.y + second.y, .z = first.z + second.z};
@@ -66,4 +68,19 @@ struct Vec3 tracer_get_pixel_color(struct Ray ray, const struct ModelArray *mode
         ray = models->shapes[shapeIndex].reflectionCallback(ray, models->shapes[shapeIndex].data, intersection);
     }
     return ray.color;
+}
+
+void tracer_lookat(struct Camera *camera, struct Vec3 destination){
+    camera->direction = vec3_sub(destination, camera->position);
+}
+
+struct Plane tracer_get_projection_plane(const struct Camera *camera){
+    /* WE WANT TO FIND IN PLANE UNIT VECTORS PERPENDICULAR */
+    /* TODO, IMPLEMENT */
+    struct Plane plane = {0};
+    plane.first.z = (fabs(camera->direction.x) - fabs(camera->direction.z) < EPSILON) ? sqrtf(0.5f) : 
+        fabs(camera->direction.x) / sqrtf(camera->direction.x * camera->direction.x + camera->direction.z * camera->direction.z);
+    plane.first.x = (fabs(camera->direction.x) < EPSILON) ? 0.f : -camera->direction.z * plane.first.z / camera->direction.x;
+    /* MISSING SOLVING SECOND VECTOR */
+    return (struct Plane) {.first = {.x = 1.f}, .second = {.y = 1.f}};
 }

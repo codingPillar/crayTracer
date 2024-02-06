@@ -8,6 +8,10 @@
 struct Vec3{
     float x, y, z;
 };
+struct Plane{
+    struct Vec3 first;
+    struct Vec3 second;
+};
 struct Vec3 vec3_add(const struct Vec3 first, const struct Vec3 second);
 struct Vec3 vec3_sub(const struct Vec3 first, const struct Vec3 second);
 float vec3_dot(const struct Vec3 first, const struct Vec3 second);
@@ -43,5 +47,19 @@ struct ModelArray{
 };
 void models_push_back(struct ModelArray *models, struct Shape shape);
 struct Vec3 tracer_get_pixel_color(struct Ray ray, const struct ModelArray *models, unsigned int reflectionCount);
+
+struct Camera{
+    struct Vec3 position;
+    struct Vec3 direction;
+};
+
+void tracer_lookat(struct Camera *camera, struct Vec3 destination);
+struct Plane tracer_get_projection_plane(const struct Camera *camera);
+
+struct Scene{
+    struct Camera camera;
+    struct Vec3 projectionDomain;
+    struct ModelArray models;
+};
 
 #endif //TRACER_H

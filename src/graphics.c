@@ -55,11 +55,15 @@ void tracer_fill_circle(struct VBuffer *buffer, struct Vec3 center, int radius, 
 
 void drawScene(const struct Scene *scene, struct VBuffer *vbuffer){
     const struct Vec3 delta = {.x = scene->projectionDomain.x / vbuffer->width, .y = scene->projectionDomain.y / vbuffer->height};
+    struct Plane projectionPlane = tracer_get_projection_plane(&scene->camera);
     for(unsigned int i = 0; i < vbuffer->height; i++){
         const float dirY = -scene->projectionDomain.y / 2.f + i * delta.y;
         for(unsigned int j = 0; j < vbuffer->width; j++){
             const float dirX = -scene->projectionDomain.x / 2.f + j * delta.x;
-            struct Ray ray = {.origin = scene->camera, .direction = vec3_normalize((struct Vec3){.x = dirX, .y = dirY, .z = -scene->camera.z})};
+            struct Vec3 planeOffset = vec3_add(vec3_scale(projectionPlane.first, dirX),
+                vec3_scale(projectionPlane.second, dirY));
+            struct Ray ray = {.origin = scene->camera.position, 
+                .direction = vec3_normalize(vec3_add(scene->camera.direction, planeOffset))};
             vbuffer->buffer[i * vbuffer->width + j] = 
                 tracer_color_from_vec3(tracer_get_pixel_color(ray, &scene->models, 1));
         }

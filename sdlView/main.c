@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "SDL_keycode.h"
 #include "tracer.h"
 #include "graphics.h"
 #include "sphere.h"
@@ -43,9 +44,10 @@ int main(void){
 
     /* INITIALIZE APPLICATION MODELS */
     struct Scene scene = {
-        .camera = {.z = 1.f}, .projectionDomain = {.x = (float)context.width / context.height, .y = 1.0}
+        .camera = {.position = {.z = 1.f}}, .projectionDomain = {.x = (float)context.width / context.height, .y = 1.0}
     };
     
+    tracer_lookat(&scene.camera, (struct Vec3){0});
     struct Sphere sphere1 = {.radius = 0.5f, .center = {.z = -1.f}, .color = {.x = 0.5f, .z = 1.f}};
     struct Sphere sphere2 = {.radius = 0.5f, .center = {.x = -0.5f, .z = -2.f}, .color = {.x = 1.f, .z = .5f}};
     models_push_back(&scene.models, tracer_get_sphere(&sphere1));
@@ -57,13 +59,19 @@ int main(void){
         //Handle events on queue
         while( SDL_PollEvent( &e ) != 0 ){
             if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE ) quit = true;
+            /* UPDATE LOGIC */
+            else if(e.key.keysym.sym == SDLK_a){
+                scene.camera.position.x -= 0.05f;
+            }else if(e.key.keysym.sym == SDLK_d){
+                scene.camera.position.x += 0.05f;
+            }
         }
-
-        /* GET MOUSE POSITION */
-        SDL_GetMouseState(&context.mouseX, &context.mouseY);
 
         /* CLEAN BUFFERS */
         tracer_fill_rect(&vbuffer, (struct Vec3) {.x = 0.f, .y = 0.f}, context.width, context.height, GRAPHICS_BLACK);
+
+        /* GET MOUSE POSITION */
+        SDL_GetMouseState(&context.mouseX, &context.mouseY);
 
         /* APPLICATION DRAWING */
         drawScene(&scene, &vbuffer);
