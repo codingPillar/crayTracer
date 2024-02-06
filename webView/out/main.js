@@ -55,6 +55,14 @@ function main() {
         console.log("INITIALIZED WASM MODULE");
         wasm_api.init_scene(CANVAS_WIDTH, CANVAS_HEIGHT);
         const pixelBuffer = new Uint8ClampedArray(memory.buffer, wasm_api.get_color_buffer(), CANVAS_WIDTH * CANVAS_HEIGHT * 4);
+        for (let i = 0; i < CANVAS_WIDTH * CANVAS_HEIGHT; i++) {
+            let tmp = pixelBuffer[4 * i];
+            pixelBuffer[4 * i] = pixelBuffer[4 * i + 3];
+            pixelBuffer[4 * i + 3] = tmp;
+            tmp = pixelBuffer[4 * i + 1];
+            pixelBuffer[4 * i + 1] = pixelBuffer[4 * i + 2];
+            pixelBuffer[4 * i + 2] = tmp;
+        }
         const imageData = new ImageData(pixelBuffer, CANVAS_WIDTH, CANVAS_HEIGHT);
         context.putImageData(imageData, 0, 0);
     });
