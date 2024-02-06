@@ -1,0 +1,1 @@
+This folder is required by github for deploying page, the files here are copies of the ones found in the webView folder 
