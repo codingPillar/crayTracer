@@ -1,0 +1,14 @@
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#mainTitle{
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+#mainCanvas{
+    border: black solid 2px;
+}
