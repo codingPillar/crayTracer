@@ -39,7 +39,6 @@ void models_push_back(struct ModelArray *models, struct Shape shape){
 }
 
 struct Vec3 tracer_get_pixel_color(struct Ray ray, const struct ModelArray *models, unsigned int reflectionCount){
-    struct Vec3 color = {0};
     for(unsigned int i = 0; i < reflectionCount; i++){
         /* FIND THE NEAREST INTERSECTION WITH THE MODELS */
         enum IntersectionState intersectionState = INTESECT_NON_VALID;
@@ -65,7 +64,6 @@ struct Vec3 tracer_get_pixel_color(struct Ray ray, const struct ModelArray *mode
         if(intersectionState == INTESECT_NON_VALID) break;
         /* WE WANT TO COMPUTE REFLECTION ONLY FOR THE CLOSEST INTERSECTION POINT */
         ray = models->shapes[shapeIndex].reflectionCallback(ray, models->shapes[shapeIndex].data, intersection);
-        color = (struct Vec3) {.x = 1.f, .y = 1.f, .z = 1.f};
     }
-    return color;
+    return ray.color;
 }

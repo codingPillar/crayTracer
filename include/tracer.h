@@ -18,6 +18,7 @@ float vec3_length(const struct Vec3 vec);
 struct Ray{
     struct Vec3 origin;
     struct Vec3 direction;
+    struct Vec3 color;
 };
 struct Vec3 ray_get_position(struct Ray ray, float t);
 

@@ -6,6 +6,7 @@
 struct Sphere{
     float radius;
     struct Vec3 center;
+    struct Vec3 color;
 };
 
 struct Shape tracer_get_sphere(struct Sphere *shere);

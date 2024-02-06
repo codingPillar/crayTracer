@@ -2,7 +2,6 @@
 #include <stdbool.h>
 
 #include <SDL2/SDL.h>
-#include <stdlib.h>
 
 #include "tracer.h"
 #include "graphics.h"
@@ -43,19 +42,21 @@ int main(void){
     tracer_init_buffer(&vbuffer, context.width, context.height);
 
     /* INITIALIZE APPLICATION MODELS */
-    struct Vec3 camera = {.z = -1.f};
-    struct Vec3 projectionDomain = {.x = 1.f, .y = 1.f};
-    struct ModelArray models;
+    struct Scene scene = {
+        .camera = {.z = 1.f}, .projectionDomain = {.x = (float)context.width / context.height, .y = 1.0}
+    };
     
-    struct Sphere sphere = {.radius = 0.5f};
-    models_push_back(&models, tracer_get_sphere(&sphere));
+    struct Sphere sphere1 = {.radius = 0.5f, .center = {.z = -1.f}, .color = {.x = 0.5f, .z = 1.f}};
+    struct Sphere sphere2 = {.radius = 0.5f, .center = {.x = -0.5f, .z = -2.f}, .color = {.x = 1.f, .z = .5f}};
+    models_push_back(&scene.models, tracer_get_sphere(&sphere1));
+    models_push_back(&scene.models, tracer_get_sphere(&sphere2));
 
     bool quit = false;
     SDL_Event e;
     while( !quit ){
         //Handle events on queue
         while( SDL_PollEvent( &e ) != 0 ){
-            if( e.type == SDL_QUIT ) quit = true;
+            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE ) quit = true;
         }
 
         /* GET MOUSE POSITION */
@@ -65,15 +66,7 @@ int main(void){
         tracer_fill_rect(&vbuffer, (struct Vec3) {.x = 0.f, .y = 0.f}, context.width, context.height, GRAPHICS_BLACK);
 
         /* APPLICATION DRAWING */
-        for(unsigned int i = 0; i < context.height; i++){
-            struct Vec3 direction = {.x = i * 2.f * projectionDomain.y / context.height};
-            for(unsigned int j = 0; j < context.width; j++){
-                direction.y = j * 2.f * projectionDomain.x / context.width;
-                struct Ray ray = {.origin = camera, .direction = direction};
-                vbuffer.buffer[i * context.width + j] = 
-                    tracer_color_from_vec3(tracer_get_pixel_color(ray, &models, 1));
-            }
-        }
+        drawScene(&scene, &vbuffer);
 
         /* TEXTURE DRAWING */
         int pitch;

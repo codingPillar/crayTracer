@@ -62,5 +62,5 @@ struct Ray tracer_sphere_reflect(struct Ray ray, const struct Sphere *sphere, st
     const struct Vec3 normal = vec3_normalize(vec3_sub(intersection, sphere->center));
     const float dot = vec3_dot(vec3_normalize(ray.direction), normal);
     const struct Vec3 reflection = vec3_normalize(vec3_sub(ray.direction, vec3_scale(normal, 2 * dot)));
-    return (struct Ray) {.origin = intersection, .direction = reflection};
+    return (struct Ray) {.origin = intersection, .direction = reflection, .color = sphere->color};
 }
