@@ -52,7 +52,7 @@ void tracer_fill_circle(struct VBuffer *buffer, struct Vec3 center, int radius, 
     }
 }
 
-void drawScene(const struct Scene *scene, struct VBuffer *vbuffer){
+void tracer_draw_scene(const struct Scene *scene, struct VBuffer *vbuffer){
     const struct Vec3 delta = {.x = scene->projectionDomain.x / vbuffer->width, .y = scene->projectionDomain.y / vbuffer->height};
     struct Plane projectionPlane = tracer_get_projection_plane(&scene->camera);
     for(unsigned int i = 0; i < vbuffer->height; i++){
