@@ -1,7 +1,6 @@
 #include "common.h"
 #include "graphics.h"
 #include "tracer.h"
-#include <stdint.h>
 
 void tracer_init_buffer(struct VBuffer *buffer, unsigned int width, unsigned int height){
     buffer->width = width;

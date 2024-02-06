@@ -1,6 +1,3 @@
-#include <math.h>
-#include <string.h>
-
 #include "common.h"
 #include "sphere.h"
 #include "tracer.h"

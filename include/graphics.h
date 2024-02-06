@@ -1,8 +1,7 @@
 #ifndef TRACER_GRAPHICS_H
 #define TRACER_GRAPHICS_H
 
-#include <stdint.h>
-
+#include "common.h"
 #include "tracer.h"
 
 #define GRAPHICS_BLACK      0x00000000
